@@ -81,8 +81,9 @@ void plot_signals(double* original, double* noisy, double* filtered, int N, cons
     int width = 80;
     int height = 20;
     
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ Графический вывод: %s %-40s ║\n", sort_name, "");
+    printf("\n");
+    printf("╔════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("                              %s %s \n", sort_name, "");
     printf("╚════════════════════════════════════════════════════════════════════════════════╝\n");
     
     char canvas[3][height][width + 1];
