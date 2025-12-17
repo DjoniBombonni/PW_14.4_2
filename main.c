@@ -87,7 +87,7 @@ void plot_signals(double* original, double* noisy, double* filtered, int N, cons
     
     char canvas[3][height][width + 1];
     
-    // Инициализация канвас
+    //Инициализация канвас
     for (int k = 0; k < 3; k++) {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -97,7 +97,7 @@ void plot_signals(double* original, double* noisy, double* filtered, int N, cons
         }
     }
     
-    // Функции для рисования
+    //Функции для рисования
     double* signals[] = {original, noisy, filtered};
     const char* titles[] = {"Оригинальный сигнал", "Зашумлённый сигнал", "Отфильтрованный сигнал"};
     char symbols[] = {'*', '*', '*'};
@@ -107,7 +107,7 @@ void plot_signals(double* original, double* noisy, double* filtered, int N, cons
             int x = (i * width) / N;
             if (x >= width) x = width - 1;
             
-            // Нормализуем значение в диапазон [0, height-1]
+            //Нормализуем значение в диапазон [0,-1]
             int y = (int)((signals[k][i] + 1.0) * (height - 1) / 2.0);
             if (y < 0) y = 0;
             if (y >= height) y = height - 1;
@@ -226,7 +226,7 @@ int main() {
         }
         printf("-------------------------------------------------------\n");
         */
-        // Графический вывод функций
+        //Графический вывод функций
         plot_signals(original, noisy, filtered, N, sorts[s].name);
         
         free(filtered);
