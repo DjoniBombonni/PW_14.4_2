@@ -76,6 +76,63 @@ void quicksort(double arr[], int low, int high) {
     }
 }
 
+//Графический вывод функций (ASCII-график)
+void plot_signals(double* original, double* noisy, double* filtered, int N, const char* sort_name) {
+    int width = 80;
+    int height = 20;
+    
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ Графический вывод: %s %-40s ║\n", sort_name, "");
+    printf("╚════════════════════════════════════════════════════════════════════════════════╝\n");
+    
+    char canvas[3][height][width + 1];
+    
+    // Инициализация канвас
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                canvas[k][i][j] = ' ';
+            }
+            canvas[k][i][width] = '\0';
+        }
+    }
+    
+    // Функции для рисования
+    double* signals[] = {original, noisy, filtered};
+    const char* titles[] = {"Оригинальный сигнал", "Зашумлённый сигнал", "Отфильтрованный сигнал"};
+    char symbols[] = {'*', '*', '*'};
+    
+    for (int k = 0; k < 3; k++) {
+        for (int i = 0; i < N; i++) {
+            int x = (i * width) / N;
+            if (x >= width) x = width - 1;
+            
+            // Нормализуем значение в диапазон [0, height-1]
+            int y = (int)((signals[k][i] + 1.0) * (height - 1) / 2.0);
+            if (y < 0) y = 0;
+            if (y >= height) y = height - 1;
+            
+            canvas[k][height - 1 - y][x] = symbols[k];
+        }
+        
+        printf("\n%s:\n", titles[k]);
+        printf("┌");
+        for (int j = 0; j < width; j++) printf("─");
+        printf("┐\n");
+        
+        for (int i = 0; i < height; i++) {
+            printf("│\033[32m%s\033[0m│\n", canvas[k][i]);
+        }
+        
+        printf("└");
+        for (int j = 0; j < width; j++) printf("─");
+        printf("┘\n");
+        printf("  %-20s", "1.0");
+        for (int j = 21; j < width - 6; j++) printf(" ");
+        printf("-1.0\n");
+    }
+}
+
 //Медианный фильтр
 double* median_filter(double* signal, int N, int window_size, void (*sort_func)(double[], int, int)) {
     double* filtered = (double*)malloc(N * sizeof(double));
@@ -159,7 +216,7 @@ int main() {
             return 1;
         }
 
-        printf("\n#Фильтрация с использованием %s:\n", sorts[s].name);
+        /*printf("\n#Фильтрация с использованием %s:\n", sorts[s].name);
         printf("_______________________________________________________\n");
         printf("| %-8s    | %-10s   | %-11s | %-12s |\n", "Время", "Оригинал", "Зашумлённый", "Фильтрованный");
         printf("|----------|------------|-------------|---------------|\n");
@@ -168,6 +225,10 @@ int main() {
             printf("| %-8.4f | %-10.6f | %-11.6f | %-12.6f  |\n", t, original[i], noisy[i], filtered[i]);
         }
         printf("-------------------------------------------------------\n");
+        */
+        // Графический вывод функций
+        plot_signals(original, noisy, filtered, N, sorts[s].name);
+        
         free(filtered);
     }
 
@@ -175,5 +236,3 @@ int main() {
     free(noisy);
     return 0;
 }
-
-//необходимо добавить графический вывод функций
